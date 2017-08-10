@@ -1,4 +1,6 @@
 class MeetupsController < ApplicationController
+  before_action :authenticate_user!, except: [:index, :show]
+
   def index
     @meetups = Meetup.all
   end
@@ -33,7 +35,7 @@ class MeetupsController < ApplicationController
     @meetup = Meetup.find(params[:id])
     @meetup.destroy
     flash[:alert] = "meetup deleted"
-    
+
     redirect_to meetups_path
   end
 
