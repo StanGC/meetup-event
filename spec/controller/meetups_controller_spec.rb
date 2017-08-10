@@ -60,4 +60,41 @@ RSpec.describe MeetupsController, type: :controller do
       end
     end
   end
+
+  describe "POST create" do
+    let(:user) { create(:user) }
+    before { sign_in user }
+
+    context "when meetup doesn't have title" do
+      it "doesn't create a record" do
+        expect do
+          post :create, params: { meetup: { :description => "bar" }}
+        end.to change { Meetup.count }.by(0)
+      end
+
+      it "render new template" do
+        post :create, params: { meetup: { :description => "bar" } }
+
+        expect(response).to render_template("new")
+      end
+    end
+
+    context "when meetup has title" do
+      it "create a new meetup record" do
+        meetup = build(:meetup)
+
+        expect do
+          post :create, params: { meetup: attributes_for(:meetup) }
+        end.to change { Meetup.count }.by(1)
+      end
+
+      it "redirects to meetups_path" do
+        meetup = build(:meetup)
+
+        post :create, params:{ meetup: attributes_for(:meetup) }
+
+        expect(response).to redirect_to meetups_path
+      end
+    end
+  end
 end 
