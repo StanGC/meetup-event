@@ -97,4 +97,25 @@ RSpec.describe MeetupsController, type: :controller do
       end
     end
   end
+
+  describe "GET edit" do
+    let(:user) { create(:user) }
+    before { sign_in user }
+
+    it "assign meetup" do
+      meetup = create(:meetup)
+
+      get :edit , :id => meetup.id
+
+      expect(assigns[:meetup]).to eq(meetup)
+    end
+
+    it "render template" do
+      meetup = create(:meetup)
+
+      get :edit , :id => meetup.id
+
+      expect(response).to render_template("edit")
+    end
+  end
 end 
