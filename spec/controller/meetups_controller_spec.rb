@@ -4,8 +4,8 @@ RSpec.describe MeetupsController, type: :controller do
 
   describe "GET index" do
     it "assigns @meetups and render template" do
-      meetup1 = Meetup.create(title: "foo", description: "bar")
-      meetup2 = Meetup.create(title: "bar", description: "foo")
+      meetup1 = create(:meetup)
+      meetup2 = create(:meetup)
       get:index
       expect(assigns[:meetups]).to eq([meetup1, meetup2])
     end
@@ -13,13 +13,13 @@ RSpec.describe MeetupsController, type: :controller do
 
   describe "GET show" do
     it "assigns @meetup" do
-      meetup = Meetup.create(title: "foo", description: "bar")
+      meetup = create(:meetup)
       get :show, params: { id: meetup.id }
       expect(assigns[:meetup]).to eq(meetup)
     end
 
     it "render template" do
-      meetup = Meetup.create(title: "foo", description: "bar")
+      meetup = create(:meetup)
       get :show, params: { id: meetup.id }
       expect(response).to render_template("show")
     end
