@@ -148,4 +148,31 @@ RSpec.describe MeetupsController, type: :controller do
       expect(response).to redirect_to meetup_path(meetup)
     end
   end
+
+  describe "DELETE destroy" do
+    let(:user) { create(:user) }
+    before { sign_in user }
+
+    it "assigns @meetup" do
+      meetup = create(:meetup)
+
+      delete :destroy, id: meetup.id
+
+      expect(assigns[:meetup]).to eq(meetup)
+    end
+
+    it "deletes a record" do
+      meetup = create(:meetup)
+
+      expect { delete :destroy, id: meetup.id }.to change { Meetup.count }.by(-1)
+    end
+
+    it "redirects to meetups_path" do
+      meetup = create(:meetup)
+
+      delete :destroy, id: meetup.id
+
+      expect(response).to redirect_to meetups_path
+    end
+  end
 end 
