@@ -118,4 +118,34 @@ RSpec.describe MeetupsController, type: :controller do
       expect(response).to render_template("edit")
     end
   end
+
+  describe "PUT update" do
+    let(:user) { create(:user) }
+    before { sign_in user }
+
+    it "assign @meetup" do
+      meetup = create(:meetup)
+
+      put :update , params: { id: meetup.id, meetup: { title: "Title", description: "Description" } }
+
+      expect(assigns[:meetup]).to eq(meetup)
+    end
+
+    it "changes value" do
+      meetup = create(:meetup)
+
+      put :update , params: { id: meetup.id, meetup: { title: "Title", description: "Description" } }
+
+      expect(assigns[:meetup].title).to eq("Title")
+      expect(assigns[:meetup].description).to eq("Description")
+    end
+
+    it "redirects to meetup_path" do
+      meetup = create(:meetup)
+
+      put :update , params: { id: meetup.id, meetup: { title: "Title", description: "Description" } }
+
+      expect(response).to redirect_to meetup_path(meetup)
+    end
+  end
 end 
