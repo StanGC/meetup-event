@@ -33,4 +33,31 @@ RSpec.describe MeetupsController, type: :controller do
       expect(response).to render_template("show")
     end
   end
+
+  describe "GET new" do
+    context "when user login" do
+      let(:user) { create(:user) }
+      let(:meetup) { build(:meetup) }
+
+      before do
+        sign_in user
+        get :new
+      end
+
+      it "assigns @meetup" do
+        expect(assigns(:meetup)).to be_a_new(Meetup)
+      end
+
+      it "renders template" do
+        expect(response).to render_template("new")
+      end
+    end
+
+    context "when user not login" do
+      it "redirect_to new_user_session_path" do
+        get :new
+        expect(response).to redirect_to new_user_session_path
+      end
+    end
+  end
 end 
